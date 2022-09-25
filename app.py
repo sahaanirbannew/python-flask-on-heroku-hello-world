@@ -241,7 +241,8 @@ def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_correcti
   
   return response
 
-nlp = spacy.load("en_core_web_sm") 
+
+  
 wikibirds = load_all_birds_list() 
 ebirds = get_eBird_commonNames_data()
 all_birds_list = get_all_birds_list(wikibirds,ebirds)
@@ -254,6 +255,12 @@ def hello_world():
 
 @app.route('/ner')
 def getBirds():
+  try:
+    nlp = spacy.load("en_core_web_sm") 
+  except Exception as e:
+    response['error'].append("Error in loading en_core_web_sm")
+    response['error'].append(str(e))
+  
   response = {} 
   response['error'] = []
   response['message'] = [] 
