@@ -10,7 +10,6 @@ import urllib.request
 import demoji
 import pickle 
 import spacy 
-#nlp = spacy.load("en_core_web_sm")
 import preprocessor as p
 import re
 import demoji
@@ -178,16 +177,21 @@ def basic_preprocess(tweet, spelling_corrections):
       tweet = tweet.replace(key,spelling_corrections[key])
   return tweet 
 
-#def return_singular_nouns(preprocessed_tweet): 
-#  doc = nlp(preprocessed_tweet)
-#  for token in doc:
-#    token_ = str(token)
-#    if token.pos_ == "NOUN" and token_[-1:].lower()=="s":
-#      doc__ = nlp(token_[:-1])
-#     for token__ in doc__:
-#        if token__.pos_ == "NOUN" or token__.pos_ == "PROPN": 
-#          preprocessed_tweet = preprocessed_tweet.replace(token_, str(token__))
-#  return preprocessed_tweet 
+def return_singular_nouns(preprocessed_tweet, reponse): 
+  try:
+    doc = nlp(preprocessed_tweet)
+    for token in doc:
+      token_ = str(token)
+      if token.pos_ == "NOUN" and token_[-1:].lower()=="s":
+        doc__ = nlp(token_[:-1])
+       for token__ in doc__:
+          if token__.pos_ == "NOUN" or token__.pos_ == "PROPN": 
+            preprocessed_tweet = preprocessed_tweet.replace(token_, str(token__))
+  except Exception as e:
+    reponse['error'].append("Error in func. return_singular_nouns") 
+    reponse['error'].append(str(e)) 
+    
+  return preprocessed_tweet, response
 
 def return_alt_word(word_,birdnames_words): 
   min_distance = 1000
@@ -237,6 +241,7 @@ def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_correcti
   
   return response
 
+nlp = spacy.load("en_core_web_sm") 
 wikibirds = load_all_birds_list() 
 ebirds = get_eBird_commonNames_data()
 all_birds_list = get_all_birds_list(wikibirds,ebirds)
@@ -258,16 +263,24 @@ def getBirds():
     tweet = replace_emojis(tweet)
     response['message'].append("Replaced Emojis in the tweet: "+tweet) 
     tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)
-    response['message'].append("Replaced Hashtag: "+tweet) 
-    
+    response['message'].append("Replaced Hashtag: "+tweet)
     tweet = basic_preprocess(tweet, spelling_corrections)
     response['message'].append("Basic Preprocessing done: "+tweet) 
+    
+    try:
+      return_singular_nouns(preprocessed_tweet, reponse)
+    except Exception as e: 
+      response['error'].append("Faced Error. Exiting.") 
+      response['error'].append(str(e)) 
     
     try:
       response['bird_list'] = get_bird_names(tweet, birdnames_words)
     except Exception as e: 
       response['error'].append("Faced Error. Exiting.") 
       response['error'].append(str(e)) 
+    
+
+      
       
   except Exception as e:
     response['error'].append("Faced Error. Exiting.") 
