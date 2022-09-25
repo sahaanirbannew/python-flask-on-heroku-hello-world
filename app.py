@@ -257,6 +257,8 @@ def getBirds():
     response['message'].append("Tweet: "+tweet) 
     tweet = replace_emojis(tweet)
     response['message'].append("Replaced Emojis in the tweet: "+tweet) 
+    tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)
+    response['message'].append("Replaced Hashtag: "+tweet) 
   except Exception as e:
     response['error'].append("Failed getting the sentence. Sorry.") 
     response['error'].append("Adding demo sentence: There is a blue throated barbet on my window.")
