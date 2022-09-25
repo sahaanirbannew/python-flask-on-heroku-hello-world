@@ -1,6 +1,6 @@
 import flask
 ON_HEROKU = os.environ.get('ON_HEROKU')
-app = Flask(__main__)
+app = Flask(__name__)
 
 
 @app.route('/') 
