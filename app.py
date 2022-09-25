@@ -1,5 +1,5 @@
 #heroku specific imports.
-from flask import Flask
+from flask import Flask, request
 import os
 ON_HEROKU = os.environ.get('ON_HEROKU')
 app = Flask(__name__)
