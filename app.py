@@ -175,16 +175,16 @@ def basic_preprocess(tweet, spelling_corrections):
       tweet = tweet.replace(key,spelling_corrections[key])
   return tweet 
 
-def return_singular_nouns(preprocessed_tweet): 
-  doc = nlp(preprocessed_tweet)
-  for token in doc:
-    token_ = str(token)
-    if token.pos_ == "NOUN" and token_[-1:].lower()=="s":
-      doc__ = nlp(token_[:-1])
-     for token__ in doc__:
-        if token__.pos_ == "NOUN" or token__.pos_ == "PROPN": 
-          preprocessed_tweet = preprocessed_tweet.replace(token_, str(token__))
-  return preprocessed_tweet 
+#def return_singular_nouns(preprocessed_tweet): 
+#  doc = nlp(preprocessed_tweet)
+#  for token in doc:
+#    token_ = str(token)
+#    if token.pos_ == "NOUN" and token_[-1:].lower()=="s":
+#      doc__ = nlp(token_[:-1])
+#     for token__ in doc__:
+#        if token__.pos_ == "NOUN" or token__.pos_ == "PROPN": 
+#          preprocessed_tweet = preprocessed_tweet.replace(token_, str(token__))
+#  return preprocessed_tweet 
 
 def return_alt_word(word_,birdnames_words): 
   min_distance = 1000
