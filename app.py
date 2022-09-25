@@ -4,6 +4,9 @@ import os
 ON_HEROKU = os.environ.get('ON_HEROKU')
 app = Flask(__name__)
 
+#request to get the param
+import urllib.request
+
 import demoji
 import pickle 
 import spacy 
