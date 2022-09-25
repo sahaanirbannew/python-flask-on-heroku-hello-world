@@ -100,7 +100,7 @@ def get_birdname_words(all_birds_list):
       name_word = name_word.strip()
       if name_word not in birdnames_words: 
         birdnames_words.append(name_word)
- return birdnames_words
+  return birdnames_words
   
 #regarding most common spelling mistakes
 def get_spelling_corrections():
