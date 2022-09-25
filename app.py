@@ -20,8 +20,8 @@ def load_all_birds_list():
   try: 
     return bird_list_df
   except:
-    print("Error: No bird list found.")
-    return 0
+    return("Error: No bird list found.")
+    #return 0
 wikibirds = load_all_birds_list() 
 
 
@@ -30,6 +30,10 @@ wikibirds = load_all_birds_list()
 @app.route('/') 
 def hello_world():
   return "Hello World"
+
+@app.route('/load_wiki_list')
+def test_load_wiki():
+  if len(wikibirds)>0: return("loaded")
 
 
 if __name__ == '__main__':
