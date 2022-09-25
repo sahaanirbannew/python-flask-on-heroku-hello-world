@@ -227,13 +227,32 @@ def get_bird_names(tweet, birdnames_words):
           bird_list_.append(bird) 
   return bird_list_ 
 
-def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_corrections):
-  tweet = replace_emojis(tweet) 
-  tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words) 
-  tweet = basic_preprocess(tweet, spelling_corrections)  
+def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_corrections,response):
+  try:
+    tweet = replace_emojis(tweet) 
+    response['message'].append(tweet) 
+  except Exception as e:
+    response['error'].append("Failed at replace_emojis") 
+    
+  try:
+    tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words) 
+    response['message'].append(tweet) 
+  except Exception as e:
+    response['error'].append("Failed at try_replacing_hashtags_mit_birdname") 
+  
+  try: 
+    tweet = basic_preprocess(tweet, spelling_corrections)
+    response['message'].append(tweet) 
+  except Exception as e:
+    response['error'].append("Failed at basic_preprocess") 
+  
   #tweet = return_singular_nouns(tweet) 
-  bird_list = get_bird_names(tweet, birdnames_words) 
-  return bird_list
+  try:
+    response['bird_list'] = get_bird_names(tweet, birdnames_words) 
+    response['message'].append(tweet) 
+  except Exception as e:
+    response['error'].append("Failed at get_bird_names")
+  return response
 
 wikibirds = load_all_birds_list() 
 ebirds = get_eBird_commonNames_data()
@@ -249,14 +268,14 @@ def hello_world():
 def getBirds():
   response = {} 
   response['error'] = []
+  response['message'] = [] 
   try:
     tweet = request.args.get('sent') #fetches the text via the argument.
   except Exception as e:
     response['error'].append("Failed getting the sentence. Sorry.") 
     response['error'].append("Adding demo sentence: There is a blue throated barbet on my window.")
-    tweet = "Adding demo sentence: There is a blue throated barbet on my window."
-    
-  response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
+    tweet = "There is a blue throated barbet on my window."
+  response = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections,response)  
   return response
 
 
