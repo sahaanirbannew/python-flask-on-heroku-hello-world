@@ -2,3 +2,4 @@ flask
 gunicorn
 tweet-preprocessor
 Levenshtein
+demoji
