@@ -12,8 +12,8 @@ import preprocessor as p
 import re
 import demoji
 p.set_options(p.OPT.EMOJI, p.OPT.MENTION, p.OPT.URL, p.OPT.SMILEY, p.OPT.NUMBER, p.OPT.HASHTAG)
-
-
+from Levenshtein import distance as levenshtein_distance
+import requests 
 
 # regarding the emoticons.
 def replace_emojis(tweet):
@@ -30,7 +30,7 @@ def load_all_birds_list():
     return bird_list_df
   except: 
     return 0
-wikibirds = load_all_birds_list() 
+
 
 #imports eBird list
 def get_eBird_commonNames_data():
@@ -40,8 +40,7 @@ def get_eBird_commonNames_data():
     return eBird_commonNames_data 
   except Exception as e: 
     return 0
-ebirds = get_eBird_commonNames_data()
-
+  
 def get_ebirds_list(ebirds): 
   birdnames = [] 
   for bird in ebirds:
@@ -85,33 +84,38 @@ def get_birdnames__mit_brac(birdname):
     birdnames__.append(birdname_minus_brac_content.strip())
   return birdnames__ 
 
- 
-all_birds_list = wikibirds["bird_name"].unique().tolist() #from wikipedia 
-ebird_names = get_ebirds_list(ebirds) 
-for bird in ebird_names: 
-  if bird not in all_birds_list:
-    all_birds_list.append(bird)
-#all_birds_list is ready 
 
-birdnames_words = []
-for name in all_birds_list: 
-  for name_word in name.split(" "):
-    name_word = name_word.strip()
-    if name_word not in birdnames_words: 
-      birdnames_words.append(name_word)
+def get_all_birds_list(wikibirds,ebirds):
+  all_birds_list = wikibirds["bird_name"].unique().tolist() #from wikipedia 
+  ebird_names = get_ebirds_list(ebirds) 
+  for bird in ebird_names: 
+    if bird not in all_birds_list:
+      all_birds_list.append(bird)
+  return all_birds_list 
 
+def get_birdname_words(all_birds_list):
+  birdnames_words = []
+  for name in all_birds_list: 
+    for name_word in name.split(" "):
+      name_word = name_word.strip()
+      if name_word not in birdnames_words: 
+        birdnames_words.append(name_word)
+ return birdnames_words
+  
 #regarding most common spelling mistakes
-spelling_corrections = {}
-spelling_corrections["grey"] = "gray" 
-spelling_corrections["pegion"] = "pigeon" 
-spelling_corrections["brested"] = "breasted" 
-spelling_corrections["serpant"] = "serpent" 
-spelling_corrections["avedavat"] = "avadavat" 
-spelling_corrections["open billed stork"] = "asian openbill" 
-spelling_corrections["secretary bird"] = "Secretarybird" 
-spelling_corrections["dollar bird"] = "dollarbird"
-spelling_corrections["silver bill"] = "silverbill"
-spelling_corrections["eyes"] = "eye"
+def get_spelling_corrections():
+  spelling_corrections = {}
+  spelling_corrections["grey"] = "gray" 
+  spelling_corrections["pegion"] = "pigeon" 
+  spelling_corrections["brested"] = "breasted" 
+  spelling_corrections["serpant"] = "serpent" 
+  spelling_corrections["avedavat"] = "avadavat" 
+  spelling_corrections["open billed stork"] = "asian openbill" 
+  spelling_corrections["secretary bird"] = "Secretarybird" 
+  spelling_corrections["dollar bird"] = "dollarbird"
+  spelling_corrections["silver bill"] = "silverbill"
+  spelling_corrections["eyes"] = "eye"
+  return spelling_corrections
 
 def replace_emojis(tweet):
   emojis = demoji.findall(tweet) 
@@ -149,6 +153,7 @@ def get_bird_name_from_hashtag_4levels(hashtag_, birdnames):
       n_ += 1
     m_ += 1
   return None 
+
 def try_replacing_hashtags_mit_birdname(text,all_birds_list,birdnames_words):
   status = False  
   hashtags = re.findall(r"#(\w+)", text) 
@@ -186,7 +191,6 @@ def return_singular_nouns(preprocessed_tweet):
           preprocessed_tweet = preprocessed_tweet.replace(token_, str(token__))
   return preprocessed_tweet 
 
-from Levenshtein import distance as levenshtein_distance
 def return_alt_word(word_,birdnames_words): 
   min_distance = 1000
   if word_ not in birdnames_words: 
@@ -199,7 +203,6 @@ def return_alt_word(word_,birdnames_words):
     return word_  
   return word__
 
-import requests 
 def get_bird_names(tweet, birdnames_words):
   api_url = "https://bird-name-ner-nlp.herokuapp.com/ner?sent="+tweet
   response = requests.get(api_url).json() 
@@ -225,7 +228,6 @@ def get_bird_names(tweet, birdnames_words):
             break
         if status_ == False:
           bird_list_.append(bird) 
-  
   return bird_list_ 
 
 def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_corrections):
@@ -235,6 +237,11 @@ def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_correcti
   tweet = return_singular_nouns(tweet) 
   bird_list = get_bird_names(tweet, birdnames_words) 
   return bird_list
+
+wikibirds = load_all_birds_list() 
+ebirds = get_eBird_commonNames_data()
+all_birds_list = get_all_birds_list(wikibirds,ebirds)
+birdnames_words = get_birdname_words(all_birds_list) 
 
 
 @app.route('/') 
