@@ -165,15 +165,12 @@ def try_replacing_hashtags_mit_birdname(text,all_birds_list,birdnames_words):
 def basic_preprocess(tweet, spelling_corrections):
   tweet = tweet.lower() 
   tweet = p.clean(tweet) 
-  tweet = tweet.replace("\n"," ")  
-  tweet = tweet.replace("\\n"," ") 
+  tweet = tweet.replace("\n"," ")   
   if tweet[:2] == "b'": tweet = tweet[1:] 
   tweet = tweet.replace("'","")
-  tweet = tweet.replace("#","")
   tweet = re.sub(r'[^\w\s]', ' ', tweet)
   tweet = re.sub(r' x..', '', tweet)
-  tweet = re.sub(r' +', ' ', tweet) 
-  tweet = tweet.replace("x9c","")
+  tweet = re.sub(r' +', ' ', tweet)  
   tweet = tweet.strip()
   for key in spelling_corrections: 
     if tweet.find(key)>-1: 
@@ -240,8 +237,8 @@ def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_correcti
 
 wikibirds = load_all_birds_list() 
 ebirds = get_eBird_commonNames_data()
-all_birds_list = get_all_birds_list(wikibirds,ebirds)
-birdnames_words = get_birdname_words(all_birds_list) 
+#all_birds_list = get_all_birds_list(wikibirds,ebirds)
+#birdnames_words = get_birdname_words(all_birds_list) 
 
 
 @app.route('/') 
