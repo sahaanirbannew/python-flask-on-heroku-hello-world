@@ -244,9 +244,10 @@ def hello_world():
 
 @app.route('/getBirds')
 def getBirds():
+  response = {} 
   tweet = request.args.get('sent')
-  bird_list = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
-  return bird_list
+  response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
+  return response
 
 
 if __name__ == '__main__':
