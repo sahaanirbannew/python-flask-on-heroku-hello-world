@@ -260,10 +260,12 @@ def getBirds():
     tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)
     response['message'].append("Replaced Hashtag: "+tweet) 
     
+    tweet = basic_preprocess(tweet, spelling_corrections)
+    response['message'].append("Basic Preprocessing done: "+tweet) 
+    
     try:
-      tweet = basic_preprocess(tweet, spelling_corrections)
-      response['message'].append("Basic Preprocessing done: "+tweet) 
-    except Exception as e:
+      response['bird_list'] = get_bird_names(tweet, birdnames_words)
+    except Exception as e: 
       response['error'].append("Faced Error. Exiting.") 
       response['error'].append(str(e)) 
       
