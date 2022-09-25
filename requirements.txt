@@ -4,4 +4,3 @@ tweet-preprocessor
 Levenshtein
 demoji
 spacy
-spacy[transformers] 
