@@ -12,6 +12,18 @@ def replace_emojis(tweet):
     tweet = tweet.replace(item,emojis[item]) 
   return tweet
 
+#imports bird_list_df 
+import pickle 
+def load_all_birds_list():
+  file = open("bird_list_df",'rb')
+  bird_list_df = pickle.load(file)
+  try: 
+    return bird_list_df
+  except:
+    print("Error: No bird list found.")
+    return 0
+wikibirds = load_all_birds_list() 
+
 
 
 
