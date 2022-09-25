@@ -256,8 +256,8 @@ def getBirds():
     response['error'].append("Adding demo sentence: There is a blue throated barbet on my window.")
     tweet = "Adding demo sentence: There is a blue throated barbet on my window."
     
-  #response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
-  return tweet
+  response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
+  return response
 
 
 if __name__ == '__main__':
