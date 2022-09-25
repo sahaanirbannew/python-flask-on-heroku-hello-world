@@ -162,10 +162,8 @@ def try_replacing_hashtags_mit_birdname(text,all_birds_list,birdnames_words):
     if segmented_ is not None: text = text.replace("#"+hashtag,segmented_)
   return text
 
-def basic_preprocess(tweet, spelling_corrections):
-  tweet = tweet.lower() 
-  tweet = p.clean(tweet) 
-  tweet = tweet.replace("\n"," ")   
+def basic_preprocess(tweet, spelling_corrections): 
+  tweet = p.clean(tweet)  
   if tweet[:2] == "b'": tweet = tweet[1:] 
   tweet = tweet.replace("'","")
   tweet = re.sub(r'[^\w\s]', ' ', tweet)
@@ -249,6 +247,9 @@ def getBirds():
   
   response['message'].append("0: [Loaded all birds list]")
   tweet = request.args.get('sent') #fetches the text via the argument.
+  tweet = tweet.replace("\n"," ")
+  tweet = tweet.replace("\\n"," ")
+  tweet = tweet.lower() 
   response['message'].append("1: [Original Tweet] "+tweet)
   tweet = replace_emojis(tweet)
   response['message'].append("2: [Emojis removed] "+tweet)
