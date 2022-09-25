@@ -243,15 +243,16 @@ def hello_world():
 
 @app.route('/ner')
 def getBirds():
+  response = {} 
+  response['error'] = []
+  response['message'] = [] 
+  
   try:
     nlp = spacy.load("en_core_web_sm") 
   except Exception as e:
     response['error'].append("Error in loading en_core_web_sm")
     response['error'].append(str(e))
   
-  response = {} 
-  response['error'] = []
-  response['message'] = [] 
   try:
     tweet = request.args.get('sent') #fetches the text via the argument.
     tweet = replace_emojis(tweet)
