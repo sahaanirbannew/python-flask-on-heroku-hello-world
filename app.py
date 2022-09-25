@@ -242,10 +242,10 @@ birdnames_words = get_birdname_words(all_birds_list)
 def hello_world():
   return "Hello World"
 
-@app.route('/getBirds')
+@app.route('/ner')
 def getBirds():
   response = {} 
-  tweet = requests.args.get('sent')
+  tweet = request.args.get('sent') #fetches the text via the argument.
   response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
   return response
 
