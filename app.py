@@ -255,13 +255,15 @@ def getBirds():
   try:
     tweet = request.args.get('sent') #fetches the text via the argument.
     response['message'].append("Tweet: "+tweet) 
+    tweet = replace_emojis(tweet)
+    response['message'].append("Replaced Emojis in the tweet: "+tweet) 
   except Exception as e:
     response['error'].append("Failed getting the sentence. Sorry.") 
     response['error'].append("Adding demo sentence: There is a blue throated barbet on my window.")
     tweet = "There is a blue throated barbet on my window."
   
   response['message'].append("No of birds: "+str(len(all_birds_list))) 
-  response = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections,response)  
+  #response = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections,response)  
   return response
 
 
