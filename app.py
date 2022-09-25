@@ -246,8 +246,8 @@ def hello_world():
 def getBirds():
   response = {} 
   tweet = request.args.get('sent') #fetches the text via the argument.
-  response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
-  return response
+  #response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
+  return tweet
 
 
 if __name__ == '__main__':
