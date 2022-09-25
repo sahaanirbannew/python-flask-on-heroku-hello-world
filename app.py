@@ -248,10 +248,14 @@ def hello_world():
 @app.route('/ner')
 def getBirds():
   response = {} 
+  response['error'] = []
   try:
     tweet = request.args.get('sent') #fetches the text via the argument.
   except Exception as e:
-    tweet = "Failed getting the sentence. Sorry."
+    response['error'].append("Failed getting the sentence. Sorry.") 
+    response['error'].append("Adding demo sentence: There is a blue throated barbet on my window.")
+    tweet = "Adding demo sentence: There is a blue throated barbet on my window."
+    
   #response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
   return tweet
 
