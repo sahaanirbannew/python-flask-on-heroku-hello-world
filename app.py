@@ -184,7 +184,7 @@ def return_singular_nouns(preprocessed_tweet, reponse):
       token_ = str(token)
       if token.pos_ == "NOUN" and token_[-1:].lower()=="s":
         doc__ = nlp(token_[:-1])
-       for token__ in doc__:
+        for token__ in doc__:
           if token__.pos_ == "NOUN" or token__.pos_ == "PROPN": 
             preprocessed_tweet = preprocessed_tweet.replace(token_, str(token__))
   except Exception as e:
