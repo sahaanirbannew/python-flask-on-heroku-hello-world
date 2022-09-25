@@ -245,7 +245,7 @@ def hello_world():
 @app.route('/getBirds')
 def getBirds():
   response = {} 
-  tweet = request.args.get('sent')
+  tweet = requests.args.get('sent')
   response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
   return response
 
