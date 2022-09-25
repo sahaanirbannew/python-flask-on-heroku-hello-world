@@ -245,7 +245,10 @@ def hello_world():
 @app.route('/ner')
 def getBirds():
   response = {} 
-  tweet = request.args.get('sent') #fetches the text via the argument.
+  try:
+    tweet = request.args.get('sent') #fetches the text via the argument.
+  except Exception as e:
+    tweet = "Failed getting the sentence. Sorry."
   #response['bird-list'] = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections)  
   return tweet
 
