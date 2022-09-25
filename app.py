@@ -31,7 +31,6 @@ def load_all_birds_list():
   except: 
     return 0
 
-
 #imports eBird list
 def get_eBird_commonNames_data():
   file = open("bird_dict_comName",'rb')
@@ -83,7 +82,6 @@ def get_birdnames__mit_brac(birdname):
   else:
     birdnames__.append(birdname_minus_brac_content.strip())
   return birdnames__ 
-
 
 def get_all_birds_list(wikibirds,ebirds):
   all_birds_list = wikibirds["bird_name"].unique().tolist() #from wikipedia 
@@ -217,7 +215,6 @@ def get_bird_names(tweet, birdnames_words):
       #check for spelling errors.
       for word in bird.split(" "):
         bird = bird.replace(word, return_alt_word(word,birdnames_words)) 
-
       if len(bird)>0:
         for bird_ in bird_list_:
           if bird_.find(bird) > -1: #if it is found, then no action.  
@@ -235,7 +232,7 @@ def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_correcti
   bird_list = get_bird_names(tweet, birdnames_words) 
   return bird_list
 
-wikibirds = load_all_birds_list() 
+#wikibirds = load_all_birds_list() 
 #ebirds = get_eBird_commonNames_data()
 #all_birds_list = get_all_birds_list(wikibirds,ebirds)
 #birdnames_words = get_birdname_words(all_birds_list) 
