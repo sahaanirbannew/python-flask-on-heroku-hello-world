@@ -5,19 +5,7 @@ ON_HEROKU = os.environ.get('ON_HEROKU')
 app = Flask(__name__)
 
 
-#program requirements
-import pickle 
-#from Levenshtein import distance as levenshtein_distance
-import re
-#import tweepy
-import preprocessor as p
-p.set_options(p.OPT.EMOJI, p.OPT.MENTION, p.OPT.URL, p.OPT.SMILEY, p.OPT.NUMBER, p.OPT.HASHTAG)
-#import os, sys 
-import pandas as pd  
-import spacy
-import demoji
-demoji.download_codes()
-nlp = spacy.load("en_core_web_sm")
+
 
 
 
