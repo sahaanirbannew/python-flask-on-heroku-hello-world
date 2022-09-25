@@ -259,12 +259,16 @@ def getBirds():
     response['message'].append("Replaced Emojis in the tweet: "+tweet) 
     tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)
     response['message'].append("Replaced Hashtag: "+tweet) 
-    tweet = basic_preprocess(tweet, spelling_corrections)
-    response['message'].append("Basic Preprocessing done: "+tweet) 
+    
+    try:
+      tweet = basic_preprocess(tweet, spelling_corrections)
+      response['message'].append("Basic Preprocessing done: "+tweet) 
+    except Exception as e:
+      response['error'].append("Faced Error. Exiting.") 
+      response['error'].append(str(e)) 
+      
   except Exception as e:
-    response['error'].append("Failed getting the sentence. Sorry.") 
-    response['error'].append("Adding demo sentence: There is a blue throated barbet on my window.")
-    tweet = "There is a blue throated barbet on my window."
+    response['error'].append("Faced Error. Exiting.") 
   
   response['message'].append("No of birds: "+str(len(all_birds_list))) 
   #response = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections,response)  
