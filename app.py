@@ -4,7 +4,13 @@ import os
 ON_HEROKU = os.environ.get('ON_HEROKU')
 app = Flask(__name__)
 
-
+# regarding the emoticons.
+import demoji
+def replace_emojis(tweet):
+  emojis = demoji.findall(tweet) 
+  for item in emojis:
+    tweet = tweet.replace(item,emojis[item]) 
+  return tweet
 
 
 
