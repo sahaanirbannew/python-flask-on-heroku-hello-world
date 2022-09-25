@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 ON_HEROKU = os.environ.get('ON_HEROKU')
 app = Flask(__name__)
 
