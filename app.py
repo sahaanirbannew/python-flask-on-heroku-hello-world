@@ -241,7 +241,7 @@ wikibirds = load_all_birds_list()
 ebirds = get_eBird_commonNames_data()
 all_birds_list = get_all_birds_list(wikibirds,ebirds)
 birdnames_words = get_birdname_words(all_birds_list) 
-
+spelling_corrections = get_spelling_corrections()
 
 @app.route('/') 
 def hello_world():
