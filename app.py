@@ -4,8 +4,18 @@ import os
 ON_HEROKU = os.environ.get('ON_HEROKU')
 app = Flask(__name__)
 
-# regarding the emoticons.
 import demoji
+import pickle 
+import spacy 
+nlp = spacy.load("en_core_web_sm")
+import preprocessor as p
+import re
+import demoji
+p.set_options(p.OPT.EMOJI, p.OPT.MENTION, p.OPT.URL, p.OPT.SMILEY, p.OPT.NUMBER, p.OPT.HASHTAG)
+
+
+
+# regarding the emoticons.
 def replace_emojis(tweet):
   emojis = demoji.findall(tweet) 
   for item in emojis:
@@ -13,7 +23,6 @@ def replace_emojis(tweet):
   return tweet
 
 #imports bird_list_df 
-import pickle 
 def load_all_birds_list():
   file = open("bird_list_df",'rb')
   bird_list_df = pickle.load(file)
@@ -104,14 +113,12 @@ spelling_corrections["dollar bird"] = "dollarbird"
 spelling_corrections["silver bill"] = "silverbill"
 spelling_corrections["eyes"] = "eye"
 
-import demoji
 def replace_emojis(tweet):
   emojis = demoji.findall(tweet) 
   for item in emojis:
     tweet = tweet.replace(item,emojis[item]) 
   return tweet
 
-import re
 def get_bird_name_from_hashtag_4levels(hashtag_, birdnames): 
   hashtag_ = hashtag_.lower() 
   rel_birdnames = [] 
@@ -150,8 +157,6 @@ def try_replacing_hashtags_mit_birdname(text,all_birds_list,birdnames_words):
     if segmented_ is not None: text = text.replace("#"+hashtag,segmented_)
   return text
 
-import preprocessor as p
-p.set_options(p.OPT.EMOJI, p.OPT.MENTION, p.OPT.URL, p.OPT.SMILEY, p.OPT.NUMBER, p.OPT.HASHTAG)
 def basic_preprocess(tweet, spelling_corrections):
   tweet = tweet.lower() 
   tweet = p.clean(tweet) 
@@ -170,8 +175,6 @@ def basic_preprocess(tweet, spelling_corrections):
       tweet = tweet.replace(key,spelling_corrections[key])
   return tweet 
 
-import spacy 
-nlp = spacy.load("en_core_web_sm")
 def return_singular_nouns(preprocessed_tweet): 
   doc = nlp(preprocessed_tweet)
   for token in doc:
