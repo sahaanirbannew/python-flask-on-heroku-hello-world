@@ -1,4 +1,4 @@
-import flask
+from flask import Flask
 ON_HEROKU = os.environ.get('ON_HEROKU')
 app = Flask(__name__)
 
