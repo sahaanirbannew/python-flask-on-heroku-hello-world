@@ -230,18 +230,6 @@ def get_bird_names(tweet, birdnames_words):
         if status_ == False:
           bird_list_.append(bird) 
   return bird_list_ 
-
-def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_corrections,response):
-  tweet = replace_emojis(tweet)
-  response['message'].append("Removed Emoji: "+tweet) 
-  #tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words) 
-  #tweet = basic_preprocess(tweet, spelling_corrections)
-  #tweet = return_singular_nouns(tweet) 
-  #response['bird_list'] = get_bird_names(tweet, birdnames_words) 
-  
-  return response
-
-
   
 wikibirds = load_all_birds_list() 
 ebirds = get_eBird_commonNames_data()
@@ -266,29 +254,17 @@ def getBirds():
   response['message'] = [] 
   try:
     tweet = request.args.get('sent') #fetches the text via the argument.
-    response['message'].append("Tweet: "+tweet) 
     tweet = replace_emojis(tweet)
-    response['message'].append("Replaced Emojis in the tweet: "+tweet) 
     tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)
-    response['message'].append("Replaced Hashtag: "+tweet)
     tweet = basic_preprocess(tweet, spelling_corrections)
-    response['message'].append("Basic Preprocessing done: "+tweet) 
     
     try:
-      return_singular_nouns(preprocessed_tweet, reponse)
+      tweet, response = return_singular_nouns(preprocessed_tweet, reponse)
     except Exception as e: 
       response['error'].append("Faced Error. Exiting.") 
       response['error'].append(str(e)) 
     
-    try:
-      response['bird_list'] = get_bird_names(tweet, birdnames_words)
-    except Exception as e: 
-      response['error'].append("Faced Error. Exiting.") 
-      response['error'].append(str(e)) 
-    
-
-      
-      
+    response['bird_list'] = get_bird_names(tweet, birdnames_words)
   except Exception as e:
     response['error'].append("Faced Error. Exiting.") 
   
