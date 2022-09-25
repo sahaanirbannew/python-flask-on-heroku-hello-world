@@ -247,11 +247,11 @@ def getBirds():
   response['error'] = []
   response['message'] = [] 
   
-  try:
-    nlp = spacy.load("en_core_web_sm") 
-  except Exception as e:
-    response['error'].append("Error in loading en_core_web_sm")
-    response['error'].append(str(e))
+  #try:
+  #  nlp = spacy.load("en_core_web_sm") 
+  #except Exception as e:
+  #  response['error'].append("Error in loading en_core_web_sm")
+  #  response['error'].append(str(e))
   
   try:
     tweet = request.args.get('sent') #fetches the text via the argument.
@@ -259,18 +259,16 @@ def getBirds():
     tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)
     tweet = basic_preprocess(tweet, spelling_corrections)
     
-    try:
-      tweet, response = return_singular_nouns(preprocessed_tweet, reponse)
-    except Exception as e: 
-      response['error'].append("Faced Error. Exiting.") 
-      response['error'].append(str(e)) 
+    #try:
+    #  tweet, response = return_singular_nouns(preprocessed_tweet, reponse)
+    #except Exception as e: 
+    #  response['error'].append("Faced Error. Skipping plural-->single transformations.") 
+    #  response['error'].append(str(e)) 
     
     response['bird_list'] = get_bird_names(tweet, birdnames_words)
   except Exception as e:
-    response['error'].append("Faced Error. Exiting.") 
+    response['error'].append("Faced Error in predicting birdnames.") 
   
-  response['message'].append("No of birds: "+str(len(all_birds_list))) 
-  #response = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections,response)  
   return response
 
 
