@@ -7,7 +7,7 @@ app = Flask(__name__)
 import demoji
 import pickle 
 import spacy 
-nlp = spacy.load("en_core_web_sm")
+#nlp = spacy.load("en_core_web_sm")
 import preprocessor as p
 import re
 import demoji
@@ -181,7 +181,7 @@ def return_singular_nouns(preprocessed_tweet):
     token_ = str(token)
     if token.pos_ == "NOUN" and token_[-1:].lower()=="s":
       doc__ = nlp(token_[:-1])
-      for token__ in doc__:
+     for token__ in doc__:
         if token__.pos_ == "NOUN" or token__.pos_ == "PROPN": 
           preprocessed_tweet = preprocessed_tweet.replace(token_, str(token__))
   return preprocessed_tweet 
@@ -228,7 +228,7 @@ def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_correcti
   tweet = replace_emojis(tweet) 
   tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words) 
   tweet = basic_preprocess(tweet, spelling_corrections)  
-  tweet = return_singular_nouns(tweet) 
+  #tweet = return_singular_nouns(tweet) 
   bird_list = get_bird_names(tweet, birdnames_words) 
   return bird_list
 
