@@ -228,30 +228,13 @@ def get_bird_names(tweet, birdnames_words):
   return bird_list_ 
 
 def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_corrections,response):
-  try:
-    tweet = replace_emojis(tweet) 
-    response['message'].append(tweet) 
-  except Exception as e:
-    response['error'].append("Failed at replace_emojis") 
-    
-  try:
-    tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words) 
-    response['message'].append(tweet) 
-  except Exception as e:
-    response['error'].append("Failed at try_replacing_hashtags_mit_birdname") 
-  
-  try: 
-    tweet = basic_preprocess(tweet, spelling_corrections)
-    response['message'].append(tweet) 
-  except Exception as e:
-    response['error'].append("Failed at basic_preprocess") 
-  
+  tweet = replace_emojis(tweet)
+  response['message'].append("Removed Emoji: "+tweet) 
+  #tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words) 
+  #tweet = basic_preprocess(tweet, spelling_corrections)
   #tweet = return_singular_nouns(tweet) 
-  try:
-    response['bird_list'] = get_bird_names(tweet, birdnames_words) 
-    response['message'].append(tweet) 
-  except Exception as e:
-    response['error'].append("Failed at get_bird_names")
+  #response['bird_list'] = get_bird_names(tweet, birdnames_words) 
+  
   return response
 
 wikibirds = load_all_birds_list() 
@@ -276,7 +259,9 @@ def getBirds():
     response['error'].append("Failed getting the sentence. Sorry.") 
     response['error'].append("Adding demo sentence: There is a blue throated barbet on my window.")
     tweet = "There is a blue throated barbet on my window."
-  response = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections,response)  
+  
+  response['message'].append("No of birds: "+str(len(all_birds_list))) 
+  #response = get_birds_given_text(tweet,all_birds_list, birdnames_words, spelling_corrections,response)  
   return response
 
 
