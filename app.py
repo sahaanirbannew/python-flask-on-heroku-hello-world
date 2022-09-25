@@ -232,10 +232,10 @@ def get_birds_given_text(tweet,all_birds_list, birdnames_words,spelling_correcti
   bird_list = get_bird_names(tweet, birdnames_words) 
   return bird_list
 
-#wikibirds = load_all_birds_list() 
-#ebirds = get_eBird_commonNames_data()
-#all_birds_list = get_all_birds_list(wikibirds,ebirds)
-#birdnames_words = get_birdname_words(all_birds_list) 
+wikibirds = load_all_birds_list() 
+ebirds = get_eBird_commonNames_data()
+all_birds_list = get_all_birds_list(wikibirds,ebirds)
+birdnames_words = get_birdname_words(all_birds_list) 
 
 
 @app.route('/') 
