@@ -195,21 +195,13 @@ def basic_preprocess(tweet, spelling_corrections):
       tweet = tweet.replace(key,spelling_corrections[key])
   return tweet 
 
-def return_singular_nouns(preprocessed_tweet, reponse): 
-  try:
-    doc = nlp(preprocessed_tweet)
-    for token in doc:
-      token_ = str(token)
-      if token.pos_ == "NOUN" and token_[-1:].lower()=="s":
-        doc__ = nlp(token_[:-1])
-        for token__ in doc__:
-          if token__.pos_ == "NOUN" or token__.pos_ == "PROPN": 
-            preprocessed_tweet = preprocessed_tweet.replace(token_, str(token__))
-  except Exception as e:
-    reponse['error'].append("Error in func. return_singular_nouns") 
-    reponse['error'].append(str(e)) 
-    
-  return preprocessed_tweet, response
+def plural_nn_to_singular(tweet):
+  tags = nltk.pos_tag(word_tokenize(tweet)) 
+  is_noun = lambda pos: pos[:2] == 'NN' 
+  nouns = [word for (word, pos) in tags if is_noun(pos)]  
+  for noun in nouns:
+    if noun[-1:] == "s": tweet = tweet.replace(noun, noun[:-1]) 
+  return tweet 
 
 def return_alt_word(word_,birdnames_words): 
   min_distance = 1000
@@ -279,6 +271,8 @@ def getBirds():
   response['message'].append("3: [Hashtag replaced] "+tweet)
   tweet = basic_preprocess(tweet, spelling_corrections)
   response['message'].append("4: [Basic preprocessed] "+tweet)
+  tweet = plural_nn_to_singular(tweet) 
+  response['message'].append("5: [Nouns singulared] "+tweet)
   response['bird_list'] = get_bird_names(tweet, birdnames_words)
   return response
 
