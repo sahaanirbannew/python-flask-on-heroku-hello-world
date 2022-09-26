@@ -11,6 +11,7 @@ import urllib.request
 import nltk
 from nltk.tokenize import word_tokenize
 nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 
 import demoji
 import pickle 
