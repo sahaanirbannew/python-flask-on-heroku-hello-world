@@ -195,8 +195,13 @@ def basic_preprocess(tweet, spelling_corrections):
       tweet = tweet.replace(key,spelling_corrections[key])
   return tweet 
 
-def plural_nn_to_singular(tweet):
-  tags = nltk.pos_tag(word_tokenize(tweet)) 
+def plural_nn_to_singular(tweet, response):
+  try:
+    tags = nltk.pos_tag(word_tokenize(tweet))
+  except Exception as e:
+    response['error'].append("plural_nn_to_singular: Failed to generate tags") 
+    response['error'].append(str(e))
+  
   is_noun = lambda pos: pos[:2] == 'NN' 
   nouns = [word for (word, pos) in tags if is_noun(pos)]  
   for noun in nouns:
@@ -275,8 +280,9 @@ def getBirds():
   try:
     tweet = plural_nn_to_singular(tweet) 
     response['message'].append("5: [Nouns singulared] "+tweet)
-  except:
+  except Exception as e:
     response['error'].append("5: [Nouns singulared] Skipped.")
+    response['error'].append("5: "+str(e))
   response['bird_list'] = get_bird_names(tweet, birdnames_words)
   return response
 
