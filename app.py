@@ -221,7 +221,7 @@ def return_alt_word(word_,birdnames_words):
     return word_  
   return word__
 
-def get_bird_names(tweet, birdnames_words):
+def get_bird_names(tweet, birdnames_words, response):
   api_url = "https://bird-name-ner-nlp.herokuapp.com/ner?sent="+tweet
   response = requests.get(api_url).json() 
   bird_list_= [] 
@@ -231,6 +231,8 @@ def get_bird_names(tweet, birdnames_words):
   for bird in response['bird-ebird']: 
     if bird not in bird_list_: 
       bird_list_.append(bird) 
+      
+  response['message'].append(" [Birds found by rule matching] "+ str(bird_list_))
   
   for bird in response['bird-ner']:
     status_ = False 
@@ -245,7 +247,10 @@ def get_bird_names(tweet, birdnames_words):
             break
         if status_ == False:
           bird_list_.append(bird) 
-  return bird_list_ 
+          response['message'].append(" [Birds found by custom NER] "+bird)
+  
+  response['bird_list'] = bird_list_ 
+  return response 
 
 twitter = create_twitter_app_obj() 
 wikibirds = load_all_birds_list() 
@@ -265,26 +270,46 @@ def getBirds():
   response['message'] = []
   response['message'].append("0: [Loaded all birds list]")
   
-  tweet_id = request.args.get('tweet_id')
-  tweet = twitter.get_status(tweet_id,tweet_mode="extended").full_text
-  
-  #tweet = request.args.get('sent') #fetches the text via the argument.
-  #return tweet
-  response['message'].append("1: [Original Tweet] "+tweet)
-  tweet = replace_emojis(tweet)
-  response['message'].append("2: [Emojis removed] "+tweet)
-  tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)
-  response['message'].append("3: [Hashtag replaced] "+tweet)
-  tweet = basic_preprocess(tweet, spelling_corrections)
-  response['message'].append("4: [Basic preprocessed] "+tweet)
-  
+  ### gets the argument. 
   try:
-    tweet, response = plural_nn_to_singular(tweet, response) 
+    tweet_id = request.args.get('tweet_id')
+  except Exception as e: 
+    response['error'].append("0: [ERROR] Failed to retrieve tweet_id")
+    response['error'].append(str(e))
+    return response 
+  
+  ### gets the tweet text 
+  try: 
+    tweet = twitter.get_status(tweet_id,tweet_mode="extended").full_text
+  except Exception as e:
+    response['error'].append("1: [ERROR] Failed to retrieve tweet text")
+    response['error'].append(str(e))
+    return response 
+    
+  try:
+    response['message'].append("1: [Original Tweet] "+tweet)
+    tweet = replace_emojis(tweet)       #removes emojis
+    response['message'].append("2: [Emojis removed] "+tweet)
+    tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)  #finds bird names in hashtags
+    response['message'].append("3: [Hashtag replaced] "+tweet)
+    tweet = basic_preprocess(tweet, spelling_corrections) #basic preprocessing like lowercases, removal of hashtags etc.
+    response['message'].append("4: [Basic preprocessed] "+tweet)
+    tweet, response = plural_nn_to_singular(tweet, response)  #converts plural nouns to singular form.
     response['message'].append("5: [Nouns singulared] "+tweet)
   except Exception as e:
-    response['error'].append("5: [Nouns singulared] Skipped.")
-    response['error'].append("5: "+str(e))
-  response['bird_list'] = get_bird_names(tweet, birdnames_words)
+    response['error'].append("2: [ERROR] Failed in PreProcessing phase.")
+    response['error'].append(str(e))
+  
+  try:
+    response = get_bird_names(tweet, birdnames_words, response)
+    
+    if len(response['bird_list']) == 0: 
+      response['message'].append("6: [Bird Selection] No birds found. :3")
+  except Exception as e:
+    response['error'].append("3: [ERROR] Failed in finding bird names.")
+    response['error'].append(str(e))
+  
+  # returns response, most probably with some answer. 
   return response
 
 
