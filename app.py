@@ -255,6 +255,32 @@ def get_bird_names(tweet, birdnames_words, response):
   response['bird_list'] = bird_list_ 
   return response 
 
+def get_bird_names_from_sentence(tweet,all_birds_list,birdnames_words,spelling_corrections,response): 
+  try:
+    response['message'].append("1: [Original Tweet] "+tweet)
+    tweet = replace_emojis(tweet)       #removes emojis
+    response['message'].append("2: [Emojis removed] "+tweet)
+    tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)  #finds bird names in hashtags
+    response['message'].append("3: [Hashtag replaced] "+tweet)
+    tweet = basic_preprocess(tweet, spelling_corrections) #basic preprocessing like lowercases, removal of hashtags etc.
+    response['message'].append("4: [Basic preprocessed] "+tweet)
+    tweet, response = plural_nn_to_singular(tweet, response, birdnames_words)  #converts plural nouns to singular form.
+    response['message'].append("5: [Nouns singulared] "+tweet)
+  except Exception as e:
+    response['error'].append("2: [ERROR] Failed in PreProcessing phase.")
+    response['error'].append(str(e))
+  try:
+    response = get_bird_names(tweet, birdnames_words, response)
+    
+    if len(response['bird_list']) == 0: 
+      response['message'].append("6: [Bird Selection] No birds found. :3")
+  except Exception as e:
+    response['error'].append("3: [ERROR] Failed in finding bird names.")
+    response['error'].append(str(e))
+  # returns response, most probably with some answer. 
+  return response
+
+
 twitter = create_twitter_app_obj() 
 wikibirds = load_all_birds_list() 
 ebirds = get_eBird_commonNames_data()
@@ -268,11 +294,19 @@ def hello_world():
 
 @app.route('/sentence')
 def getBirds_sent():
+  response = {} 
+  response['error'] = []
+  response['message'] = []
+  response['message'].append("0: [Loaded all birds list]")
+  
   try:
     sentence = request.args.get('_inpt_sent')
-    return sentence
+    sentence = sentence.replace("%23","#") 
   except Exception as e:
     return (str(e)) 
+  
+  response = get_bird_names_from_sentence(sentence,all_birds_list,birdnames_words,spelling_corrections,response) 
+  return response 
 
 @app.route('/ner')
 def getBirds():
@@ -296,34 +330,10 @@ def getBirds():
     response['error'].append("1: [ERROR] Failed to retrieve tweet text")
     response['error'].append(str(e))
     return response 
-    
-  try:
-    response['message'].append("1: [Original Tweet] "+tweet)
-    tweet = replace_emojis(tweet)       #removes emojis
-    response['message'].append("2: [Emojis removed] "+tweet)
-    tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)  #finds bird names in hashtags
-    response['message'].append("3: [Hashtag replaced] "+tweet)
-    tweet = basic_preprocess(tweet, spelling_corrections) #basic preprocessing like lowercases, removal of hashtags etc.
-    response['message'].append("4: [Basic preprocessed] "+tweet)
-    tweet, response = plural_nn_to_singular(tweet, response, birdnames_words)  #converts plural nouns to singular form.
-    response['message'].append("5: [Nouns singulared] "+tweet)
-  except Exception as e:
-    response['error'].append("2: [ERROR] Failed in PreProcessing phase.")
-    response['error'].append(str(e))
+  response = get_bird_names_from_sentence(tweet,all_birds_list,birdnames_words,spelling_corrections,response) 
+  return response 
   
-  try:
-    response = get_bird_names(tweet, birdnames_words, response)
-    
-    if len(response['bird_list']) == 0: 
-      response['message'].append("6: [Bird Selection] No birds found. :3")
-  except Exception as e:
-    response['error'].append("3: [ERROR] Failed in finding bird names.")
-    response['error'].append(str(e))
   
-  # returns response, most probably with some answer. 
-  return response
-
-
 if __name__ == '__main__':
     app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
     port = int(os.environ.get('PORT', 5000))
