@@ -16,6 +16,18 @@ import demoji
 p.set_options(p.OPT.EMOJI, p.OPT.MENTION, p.OPT.URL, p.OPT.SMILEY, p.OPT.NUMBER, p.OPT.HASHTAG)
 from Levenshtein import distance as levenshtein_distance
 import requests 
+import tweepy
+
+#twitter object
+def create_twitter_app_obj():
+  consumer_key = "iPaIdR8GRI59yTJMs0Es0dIBN"
+  consumer_secret = "pLadg3UaLeK3yKDujRMChRN3p8hUDBOjBsuOBy8j8ERr4zz1vs"
+  access_token = "39085479-AabHt6bmFSbClDfUZuHjModYPAxVlOxHeMA79UyVt"
+  access_token_secret = "3IqXDISfqg14wzMNNn2AX4KYG9Wfkltt21QxKasE4YNnG" 
+  auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
+  auth.set_access_token(access_token, access_token_secret) 
+  api = tweepy.API(auth) 
+  return api
 
 # regarding the emoticons.
 def replace_emojis(tweet):
@@ -228,7 +240,8 @@ def get_bird_names(tweet, birdnames_words):
         if status_ == False:
           bird_list_.append(bird) 
   return bird_list_ 
-  
+
+twitter = create_twitter_app_obj() 
 wikibirds = load_all_birds_list() 
 ebirds = get_eBird_commonNames_data()
 all_birds_list = get_all_birds_list(wikibirds,ebirds)
@@ -243,14 +256,14 @@ def hello_world():
 def getBirds():
   response = {} 
   response['error'] = []
-  response['message'] = [] 
-  
+  response['message'] = []
   response['message'].append("0: [Loaded all birds list]")
-  tweet = request.args.get('sent') #fetches the text via the argument.
-  return tweet
-  tweet = tweet.replace("\n"," ")
-  tweet = tweet.replace("\\n"," ")
-  tweet = tweet.lower() 
+  
+  tweet_id = request.args.get('tweet_id')
+  tweet = twitter.get_status("1574199712747438080",tweet_mode="extended").full_text
+  
+  #tweet = request.args.get('sent') #fetches the text via the argument.
+  #return tweet
   response['message'].append("1: [Original Tweet] "+tweet)
   tweet = replace_emojis(tweet)
   response['message'].append("2: [Emojis removed] "+tweet)
