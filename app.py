@@ -266,6 +266,11 @@ spelling_corrections = get_spelling_corrections()
 def hello_world():
   return "Hello World"
 
+@app.route('/sentence')
+def getBirds_sent():
+  sentence = request.args.get('input')
+  return sentence
+
 @app.route('/ner')
 def getBirds():
   response = {} 
