@@ -175,6 +175,9 @@ def try_replacing_hashtags_mit_birdname(text,all_birds_list,birdnames_words):
   return text
 
 def basic_preprocess(tweet, spelling_corrections): 
+  tweet = tweet.lower()
+  tweet = tweet.replace("\n"," ")  
+  tweet = tweet.replace("\\n"," ") 
   tweet = p.clean(tweet)  
   if tweet[:2] == "b'": tweet = tweet[1:] 
   tweet = tweet.replace("'","")
