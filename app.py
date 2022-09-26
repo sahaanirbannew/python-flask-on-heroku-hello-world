@@ -206,7 +206,7 @@ def plural_nn_to_singular(tweet, response):
   nouns = [word for (word, pos) in tags if is_noun(pos)]  
   for noun in nouns:
     if noun[-1:] == "s": tweet = tweet.replace(noun, noun[:-1]) 
-  return tweet 
+  return tweet, response
 
 def return_alt_word(word_,birdnames_words): 
   min_distance = 1000
@@ -278,7 +278,7 @@ def getBirds():
   response['message'].append("4: [Basic preprocessed] "+tweet)
   
   try:
-    tweet = plural_nn_to_singular(tweet) 
+    tweet, response = plural_nn_to_singular(tweet, response) 
     response['message'].append("5: [Nouns singulared] "+tweet)
   except Exception as e:
     response['error'].append("5: [Nouns singulared] Skipped.")
