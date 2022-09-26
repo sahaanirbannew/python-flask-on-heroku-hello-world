@@ -260,7 +260,7 @@ def getBirds():
   response['message'].append("0: [Loaded all birds list]")
   
   tweet_id = request.args.get('tweet_id')
-  tweet = twitter.get_status("1574199712747438080",tweet_mode="extended").full_text
+  tweet = twitter.get_status(tweet_id,tweet_mode="extended").full_text
   
   #tweet = request.args.get('sent') #fetches the text via the argument.
   #return tweet
