@@ -271,8 +271,12 @@ def getBirds():
   response['message'].append("3: [Hashtag replaced] "+tweet)
   tweet = basic_preprocess(tweet, spelling_corrections)
   response['message'].append("4: [Basic preprocessed] "+tweet)
-  tweet = plural_nn_to_singular(tweet) 
-  response['message'].append("5: [Nouns singulared] "+tweet)
+  
+  try:
+    tweet = plural_nn_to_singular(tweet) 
+    response['message'].append("5: [Nouns singulared] "+tweet)
+  except:
+    response['error'].append("5: [Nouns singulared] Skipped.")
   response['bird_list'] = get_bird_names(tweet, birdnames_words)
   return response
 
