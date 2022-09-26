@@ -268,8 +268,11 @@ def hello_world():
 
 @app.route('/sentence')
 def getBirds_sent():
-  sentence = request.args.get('input')
-  return sentence
+  try:
+    sentence = request.args.get('input')
+    return sentence
+  except Exception as e:
+    return (str(e)) 
 
 @app.route('/ner')
 def getBirds():
