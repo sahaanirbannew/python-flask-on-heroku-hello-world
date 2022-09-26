@@ -234,7 +234,7 @@ def get_bird_names(tweet, birdnames_words, response):
     if bird not in bird_list_: 
       bird_list_.append(bird) 
       
-  response['message'].append(" [Birds found by rule matching] "+ str(bird_list_))
+  response['message'].append("6: [Birds found by rule matching] "+ str(bird_list_))
   
   for bird in response__['bird-ner']:
     status_ = False 
@@ -249,7 +249,7 @@ def get_bird_names(tweet, birdnames_words, response):
             break
         if status_ == False:
           bird_list_.append(bird) 
-          response['message'].append(" [Birds found by custom NER] "+bird)
+          response['message'].append("7: [Birds found by custom NER] "+bird)
   
   response['bird_list'] = bird_list_ 
   return response 
