@@ -247,6 +247,7 @@ def getBirds():
   
   response['message'].append("0: [Loaded all birds list]")
   tweet = request.args.get('sent') #fetches the text via the argument.
+  return tweet
   tweet = tweet.replace("\n"," ")
   tweet = tweet.replace("\\n"," ")
   tweet = tweet.lower() 
