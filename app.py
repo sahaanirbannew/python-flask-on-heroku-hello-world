@@ -196,7 +196,7 @@ def basic_preprocess(tweet, spelling_corrections):
       tweet = tweet.replace(key,spelling_corrections[key])
   return tweet 
 
-def plural_nn_to_singular(tweet, response):
+def plural_nn_to_singular(tweet, response, birdnames_words):
   try:
     tags = nltk.pos_tag(word_tokenize(tweet))
   except Exception as e:
@@ -206,7 +206,8 @@ def plural_nn_to_singular(tweet, response):
   is_noun = lambda pos: pos[:2] == 'NN' 
   nouns = [word for (word, pos) in tags if is_noun(pos)]  
   for noun in nouns:
-    if noun[-1:] == "s": tweet = tweet.replace(noun, noun[:-1]) 
+    if noun[-1:] == "s" and noun not in birdnames_words: 
+      tweet = tweet.replace(noun, noun[:-1]) 
   return tweet, response
 
 def return_alt_word(word_,birdnames_words): 
@@ -296,7 +297,7 @@ def getBirds():
     response['message'].append("3: [Hashtag replaced] "+tweet)
     tweet = basic_preprocess(tweet, spelling_corrections) #basic preprocessing like lowercases, removal of hashtags etc.
     response['message'].append("4: [Basic preprocessed] "+tweet)
-    tweet, response = plural_nn_to_singular(tweet, response)  #converts plural nouns to singular form.
+    tweet, response = plural_nn_to_singular(tweet, response, birdnames_words)  #converts plural nouns to singular form.
     response['message'].append("5: [Nouns singulared] "+tweet)
   except Exception as e:
     response['error'].append("2: [ERROR] Failed in PreProcessing phase.")
