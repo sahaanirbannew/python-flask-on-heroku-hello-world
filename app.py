@@ -222,19 +222,21 @@ def return_alt_word(word_,birdnames_words):
   return word__
 
 def get_bird_names(tweet, birdnames_words, response):
+  
   api_url = "https://bird-name-ner-nlp.herokuapp.com/ner?sent="+tweet
-  response = requests.get(api_url).json() 
+  response__ = requests.get(api_url).json() 
   bird_list_= [] 
-  for bird in response['bird-wiki']: 
+  
+  for bird in response__['bird-wiki']: 
     if bird not in bird_list_: 
       bird_list_.append(bird) 
-  for bird in response['bird-ebird']: 
+  for bird in response__['bird-ebird']: 
     if bird not in bird_list_: 
       bird_list_.append(bird) 
       
   response['message'].append(" [Birds found by rule matching] "+ str(bird_list_))
   
-  for bird in response['bird-ner']:
+  for bird in response__['bird-ner']:
     status_ = False 
     if bird not in bird_list_: 
       #check for spelling errors.
