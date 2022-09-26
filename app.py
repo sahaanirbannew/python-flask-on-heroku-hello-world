@@ -138,7 +138,7 @@ def get_spelling_corrections():
 def replace_emojis(tweet):
   emojis = demoji.findall(tweet) 
   for item in emojis:
-    tweet = tweet.replace(item,emojis[item]) 
+    tweet = tweet.replace(item," "+emojis[item]+" ") 
   return tweet
 
 def get_bird_name_from_hashtag_4levels(hashtag_, birdnames): 
