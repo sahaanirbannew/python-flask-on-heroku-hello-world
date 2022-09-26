@@ -7,6 +7,11 @@ app = Flask(__name__)
 #request to get the param
 import urllib.request
 
+#for NLP purposes
+import nltk
+from nltk.tokenize import word_tokenize
+nltk.download('punkt')
+
 import demoji
 import pickle 
 import spacy 
