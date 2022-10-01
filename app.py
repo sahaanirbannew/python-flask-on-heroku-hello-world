@@ -1,5 +1,5 @@
 #heroku specific imports.
-from flask import Flask, request
+from flask import Flask, request, render_template
 import os
 ON_HEROKU = os.environ.get('ON_HEROKU')
 app = Flask(__name__)
@@ -290,7 +290,7 @@ spelling_corrections = get_spelling_corrections()
 
 @app.route('/') 
 def hello_world():
-  return "Hello World"
+  return render_template('index.html') 
 
 @app.route('/sentence')
 def getBirds_sent():
