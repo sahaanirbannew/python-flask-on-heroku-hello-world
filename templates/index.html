@@ -1,198 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2113.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px '.AppleSystemUIFontMonospaced'; color: #1b1f23; -webkit-text-stroke: #1b1f23}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: right; font: 12.0px '.AppleSystemUIFontMonospaced'; color: #1b1f23; -webkit-text-stroke: #1b1f23; min-height: 15.0px}
-    span.s1 {font-kerning: none}
-    table.t1 {background-color: #ffffff; border-collapse: collapse}
-    td.td1 {width: 131.3px; padding: 0.0px 10.0px 0.0px 10.0px}
-    td.td2 {width: 131.3px; min-width: 50.0px; padding: 0.0px 10.0px 0.0px 10.0px}
-    td.td3 {width: 1763.2px; padding: 0.0px 10.0px 0.0px 10.0px}
-  </style>
+    <meta charset="UTF-8">
+    <title>Custom NER for identifying Bird Names from User-generated short texts on social media.</title>
 </head>
 <body>
-<table cellspacing="0" cellpadding="0" class="t1">
-  <tbody>
-    <tr>
-      <td valign="top" class="td1">
-        <p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1">&lt;head&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Custom NER for identifying Bird Names from User-generated short texts on social media.&lt;/title&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1">&lt;body&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;center&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">   </span>&lt;h1&gt;Custom NER for identifying Bird Names.&lt;/h1&gt; <span class="Apple-converted-space"> </span></span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;form action="/ner"&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label for="lname"&gt;Enter Sentence: &lt;/label&gt;&lt;br&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;textarea id="sent" name="sent"&gt;&lt;/textarea&gt;&lt;br&gt;&lt;br&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="submit" value="Submit"&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/form&gt;<span class="Apple-converted-space"> </span></span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p&gt;Model last updated: September 5, 2022.&lt;/p&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p&gt;Version 1.0&lt;/p&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p&gt;&lt;a href="https://www.anirbansaha.com/custom-named-entity-recognition-ner-model-to-detect-bird-names-from-user-generated-texts-on-social-media-using-natural-langauge-processing-nlp-techniques-and-the-package-spacy/"&gt;Blog post&lt;/a&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p&gt;Developer: Anirban Saha.&lt;br&gt;Special thanks to Abhishek Bora and Soham Basu for helping me understand Heroku.&lt;br&gt;UI design: &lt;/p&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1"><span class="Apple-converted-space"> </span>&lt;/center&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" class="td2">
-        <p class="p2"><span class="s1"></span><br></p>
-      </td>
-      <td valign="top" class="td3">
-        <p class="p1"><span class="s1">&lt;/html&gt;</span></p>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <center>
+   <h3>Custom NER for identifying Bird Names.</h3>  
+    <form action="/ner">
+        <label for="lname">Enter Tweet ID: </label><br>
+        <textarea id="tweet_id" name="tweet_id"></textarea><br><br>
+        <input type="submit" value="Submit">
+    </form> 
+    <p>
+    <p>Model last updated: September 5, 2022.</p>
+    <p>Version 1.0</p>
+    <p><a href="https://www.anirbansaha.com/custom-named-entity-recognition-ner-model-to-detect-bird-names-from-user-generated-texts-on-social-media-using-natural-langauge-processing-nlp-techniques-and-the-package-spacy/">Blog post</a>
+    <p>Developer: Anirban Saha.</p>
+ </center>
 </body>
 </html>
