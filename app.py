@@ -133,7 +133,7 @@ def get_spelling_corrections():
   spelling_corrections["dollar bird"] = "dollarbird"
   spelling_corrections["silver bill"] = "silverbill"
   spelling_corrections["eyes"] = "eye" 
-  spelling_corrections["snakebird"] = "anhinga"  
+  #spelling_corrections["snakebird"] = "anhinga"  
   return spelling_corrections
 
 def replace_emojis(tweet):
