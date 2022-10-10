@@ -256,17 +256,26 @@ def get_bird_names(tweet, birdnames_words, response):
   response['bird_list'] = bird_list_ 
   return response 
 
+def replace_underscores(tweet):
+  tweet = tweet.replace("_"," ")
+  return tweet
+  
+  
 def get_bird_names_from_sentence(tweet,all_birds_list,birdnames_words,spelling_corrections,response): 
   try:
     response['message'].append("1: [Original Tweet] "+tweet)
     tweet = replace_emojis(tweet)       #removes emojis
     response['message'].append("2: [Emojis removed] "+tweet)
+    
+    tweet = replace_underscores(tweet) #removes underscores   #1579145823073406977 #rose_ringed_parakeet 
+    response['message'].append("3: [Emojis removed] "+tweet)
+    
     tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)  #finds bird names in hashtags
-    response['message'].append("3: [Hashtag replaced] "+tweet)
+    response['message'].append("4: [Hashtag replaced] "+tweet)
     tweet = basic_preprocess(tweet, spelling_corrections) #basic preprocessing like lowercases, removal of hashtags etc.
-    response['message'].append("4: [Basic preprocessed] "+tweet)
+    response['message'].append("5: [Basic preprocessed] "+tweet)
     tweet, response = plural_nn_to_singular(tweet, response, birdnames_words)  #converts plural nouns to singular form.
-    response['message'].append("5: [Nouns singulared] "+tweet)
+    response['message'].append("6: [Nouns singulared] "+tweet)
   except Exception as e:
     response['error'].append("2: [ERROR] Failed in PreProcessing phase.")
     response['error'].append(str(e))
@@ -274,7 +283,7 @@ def get_bird_names_from_sentence(tweet,all_birds_list,birdnames_words,spelling_c
     response = get_bird_names(tweet, birdnames_words, response)
     
     if len(response['bird_list']) == 0: 
-      response['message'].append("6: [Bird Selection] No birds found. :3")
+      response['message'].append("7: [Bird Selection] No birds found. :3")
   except Exception as e:
     response['error'].append("3: [ERROR] Failed in finding bird names.")
     response['error'].append(str(e))
