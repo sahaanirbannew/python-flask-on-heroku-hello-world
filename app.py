@@ -148,29 +148,33 @@ def get_bird_name_from_hashtag_4levels(hashtag_, birdnames):
   for bird in birdnames:
     if bird[-2:] == hashtag_[-2:] and hashtag_[:2] == bird[:2]:
       rel_birdnames.append(bird)
-  segments = [0,1,2,3]
-  m_ = 2
-  while m_<len(hashtag_)-2: 
-    segments[0] = hashtag_[:m_] 
-    n_ = 0
-    while n_<len(hashtag_[m_:]):
-      segments[1] = hashtag_[m_:][:n_]
-      part3 = hashtag_[m_:][n_:] 
-      o_ = 0
-      while o_<len(hashtag_[m_:][n_:]): 
-        segments[2] = hashtag_[m_:][n_:][:o_] 
-        p_ = 0 
-        while p_ <len(hashtag_[m_:][n_:][o_:]): 
-          segments[3] = hashtag_[m_:][n_:][o_:][:p_]
-          part4 = hashtag_[m_:][n_:][o_:][p_:]
-          prob_birdname = segments[0] +" " + segments[1] +" " + segments[2] +" " + segments[3] +" " + part4
-          prob_birdname = re.sub(r' +', ' ', prob_birdname)  
-          if prob_birdname in rel_birdnames: 
-            return prob_birdname
-          p_ += 1
-        o_ += 1 
-      n_ += 1
-    m_ += 1
+  
+  if len(rel_birdnames)>0:
+    if hashtag_ in rel_birdnames:
+      return hashtag_
+    segments = [0,1,2,3]
+    m_ = 2
+    while m_<len(hashtag_)-2: 
+      segments[0] = hashtag_[:m_] 
+      n_ = 0
+      while n_<len(hashtag_[m_:]):
+        segments[1] = hashtag_[m_:][:n_]
+        part3 = hashtag_[m_:][n_:] 
+        o_ = 0
+        while o_<len(hashtag_[m_:][n_:]): 
+          segments[2] = hashtag_[m_:][n_:][:o_] 
+          p_ = 0 
+          while p_ <len(hashtag_[m_:][n_:][o_:]): 
+            segments[3] = hashtag_[m_:][n_:][o_:][:p_]
+            part4 = hashtag_[m_:][n_:][o_:][p_:]
+            prob_birdname = segments[0] +" " + segments[1] +" " + segments[2] +" " + segments[3] +" " + part4
+            prob_birdname = re.sub(r' +', ' ', prob_birdname)  
+            if prob_birdname in rel_birdnames: 
+              return prob_birdname
+            p_ += 1
+          o_ += 1 
+        n_ += 1
+      m_ += 1
   return None 
 
 def try_replacing_hashtags_mit_birdname(text,all_birds_list,birdnames_words):
