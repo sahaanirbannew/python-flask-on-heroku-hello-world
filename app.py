@@ -181,6 +181,8 @@ def try_replacing_hashtags_mit_birdname(text,all_birds_list,birdnames_words):
   status = False  
   hashtags = re.findall(r"#(\w+)", text) 
   for hashtag in hashtags:
+    if hashtag in birdnames_words: 
+      text = text.replace("#"+hashtag,hashtag) #rose_ringed_parakeet
     segmented_ = get_bird_name_from_hashtag_4levels(hashtag, all_birds_list)
     if segmented_ is not None: text = text.replace("#"+hashtag,segmented_)
   return text
