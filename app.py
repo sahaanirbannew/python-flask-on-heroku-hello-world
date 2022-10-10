@@ -268,7 +268,7 @@ def get_bird_names_from_sentence(tweet,all_birds_list,birdnames_words,spelling_c
     response['message'].append("2: [Emojis removed] "+tweet)
     
     tweet = replace_underscores(tweet) #removes underscores   #1579145823073406977 #rose_ringed_parakeet 
-    response['message'].append("3: [Emojis removed] "+tweet)
+    response['message'].append("3: [Underscores removed] "+tweet)
     
     tweet = try_replacing_hashtags_mit_birdname(tweet,all_birds_list, birdnames_words)  #finds bird names in hashtags
     response['message'].append("4: [Hashtag replaced] "+tweet)
