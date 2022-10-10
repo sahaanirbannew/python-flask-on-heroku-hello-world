@@ -39,7 +39,7 @@ def create_twitter_app_obj():
 def replace_emojis(tweet):
   emojis = demoji.findall(tweet) 
   for item in emojis:
-    tweet = tweet.replace(item,emojis[item]) 
+    tweet = tweet.replace(item," "+emojis[item]+" ") 
   return tweet
 
 #imports bird_list_df 
