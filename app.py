@@ -257,6 +257,7 @@ def get_bird_names(tweet, birdnames_words, response):
   return response 
 
 def replace_underscores(tweet):
+  tweet = tweet.lower()
   tweet = tweet.replace("_"," ")
   return tweet
   
