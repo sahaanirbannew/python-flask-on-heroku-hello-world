@@ -144,6 +144,13 @@ def replace_emojis(tweet):
 
 def get_bird_name_from_hashtag_4levels(hashtag_, birdnames): 
   hashtag_ = hashtag_.lower() 
+  
+  special_cases = {}
+  special_cases["greateradjutantstork"] = "greateradjutant" 
+  
+  for key in special_cases: 
+    if hashtag_ == key: hashtag_ = special_cases[key] 
+  
   rel_birdnames = [] 
   for bird in birdnames:
     if bird[-2:] == hashtag_[-2:] and hashtag_[:2] == bird[:2]:
