@@ -255,8 +255,8 @@ def get_bird_names(tweet, birdnames_words, response):
     status_ = False 
     if bird not in bird_list_: 
       #check for spelling errors.
-      for word in bird.split(" "):
-        bird = bird.replace(word, return_alt_word(word,birdnames_words)) 
+      #for word in bird.split(" "):         #commenting it now. Would uncomment after all alternate names are input. 1580038748716220424 
+      #  bird = bird.replace(word, return_alt_word(word,birdnames_words)) 
       if len(bird)>0:
         for bird_ in bird_list_:
           if bird_.find(bird) > -1: #if it is found, then no action.  
