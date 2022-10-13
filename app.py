@@ -220,19 +220,19 @@ def plural_nn_to_singular(tweet, response, birdnames_words):
       tweet = tweet.replace(noun, noun[:-1]) 
   return tweet, response
 
-def return_alt_word(word_,birdnames_words): 
+def return_alt_word(bird_,birdnames): 
   min_distance = 1000
-  if word_ not in birdnames_words: 
-    for word in birdnames_words: 
-      dist_ = levenshtein_distance(word_,word)
+  if bird_ not in birdnames: 
+    for bird in birdnames: 
+      dist_ = levenshtein_distance(bird_,bird)
       if dist_ < min_distance: 
         min_distance = dist_
-        word__ = word 
-  else: 
-    return word_  
-  return word__
+        bird__ = bird 
+    if min_distance <5:
+      return bird__  
+  return bird_   
 
-def get_bird_names(tweet, birdnames_words, response):
+def get_bird_names(tweet, all_birds_list, response):
   
   api_url = "https://bird-name-ner-nlp.herokuapp.com/ner?sent="+tweet
   response__ = requests.get(api_url).json() 
@@ -251,8 +251,9 @@ def get_bird_names(tweet, birdnames_words, response):
     status_ = False 
     if bird not in bird_list_: 
       #check for spelling errors.
-      #for word in bird.split(" "):         #commenting it now. Would uncomment after all alternate names are input. 1580038748716220424 
-      #  bird = bird.replace(word, return_alt_word(word,birdnames_words)) 
+      for word in bird.split(" "):         #commenting it now. Would uncomment after all alternate names are input. 1580038748716220424 
+        bird = return_alt_word(bird,all_birds_list)
+      
       if len(bird)>0:
         for bird_ in bird_list_:
           if bird_.find(bird) > -1: #if it is found, then no action.  
@@ -290,7 +291,7 @@ def get_bird_names_from_sentence(tweet,all_birds_list,birdnames_words,spelling_c
     response['error'].append("2: [ERROR] Failed in PreProcessing phase.")
     response['error'].append(str(e))
   try:
-    response = get_bird_names(tweet, birdnames_words, response)
+    response = get_bird_names(tweet, all_birds_list, response)
     
     if len(response['bird_list']) == 0: 
       response['message'].append("7: [Bird Selection] No birds found. :3")
