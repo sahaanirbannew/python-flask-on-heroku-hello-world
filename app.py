@@ -45,7 +45,7 @@ def replace_emojis(tweet):
 #imports bird_list_df 
 def load_all_birds_list():
   file = open("bird_list_df",'rb')
-  bird_list_df = pickle.load(file)
+  bird_list_df = pickle.load(file) #birdnames_words
   try: 
     return bird_list_df
   except: 
@@ -111,13 +111,9 @@ def get_all_birds_list(wikibirds,ebirds):
       all_birds_list.append(bird)
   return all_birds_list 
 
-def get_birdname_words(all_birds_list):
-  birdnames_words = []
-  for name in all_birds_list: 
-    for name_word in name.split(" "):
-      name_word = name_word.strip()
-      if name_word not in birdnames_words: 
-        birdnames_words.append(name_word)
+def get_birdname_words():
+  file = open("birdnames_words",'rb')
+  birdnames_words = pickle.load(file)
   return birdnames_words
   
 #regarding most common spelling mistakes
@@ -309,7 +305,7 @@ twitter = create_twitter_app_obj()
 wikibirds = load_all_birds_list() 
 ebirds = get_eBird_commonNames_data()
 all_birds_list = get_all_birds_list(wikibirds,ebirds)
-birdnames_words = get_birdname_words(all_birds_list) 
+birdnames_words = get_birdname_words() 
 spelling_corrections = get_spelling_corrections()
 
 @app.route('/') 
