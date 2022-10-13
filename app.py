@@ -300,11 +300,21 @@ def get_bird_names_from_sentence(tweet,all_birds_list,birdnames_words,spelling_c
   # returns response, most probably with some answer. 
   return response
 
-
+def get_all_birds_list_():
+  file = open("all_birds_list",'rb')
+  all_birds_list = pickle.load(file)
+  try: 
+    return all_birds_list
+  except: 
+    return 0
+  
 twitter = create_twitter_app_obj() 
-wikibirds = load_all_birds_list() 
-ebirds = get_eBird_commonNames_data()
-all_birds_list = get_all_birds_list(wikibirds,ebirds)
+
+#the below 3 lines commented because it is no more required. No need to make the list every time. An exhaustive list is made and saved as file which can be imported.
+#wikibirds = load_all_birds_list() 
+#ebirds = get_eBird_commonNames_data()
+#all_birds_list = get_all_birds_list(wikibirds,ebirds)
+all_birds_list = get_all_birds_list_()
 birdnames_words = get_birdname_words() 
 spelling_corrections = get_spelling_corrections()
 
